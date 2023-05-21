@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AcceptOrderDialog</class>
+ <widget class="QDialog" name="AcceptOrderDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>444</width>
+    <height>378</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTextBrowser" name="textBrowser"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="AcceptpushButton">
+         <property name="text">
+          <string>Принять</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="DeniepushButton">
+         <property name="text">
+          <string>Отклонить</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BackpushButton">
+         <property name="text">
+          <string>К списку заявок</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>BackpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>AcceptOrderDialog</receiver>
+   <slot>backToOrders()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DeniepushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>AcceptOrderDialog</receiver>
+   <slot>cancelOrder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>173</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AcceptpushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>AcceptOrderDialog</receiver>
+   <slot>acceptOrder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>292</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>32</x>
+     <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>backToOrders()</slot>
+  <slot>acceptOrder()</slot>
+  <slot>cancelOrder()</slot>
+ </slots>
+</ui>
