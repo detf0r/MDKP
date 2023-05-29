@@ -41,7 +41,7 @@
         <item>
          <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>Сделать новый заказ</string>
+           <string>Сделать новую заявку</string>
           </property>
          </widget>
         </item>

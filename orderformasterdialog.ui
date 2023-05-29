@@ -59,7 +59,7 @@
        <item>
         <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>К списку заказов</string>
+          <string>К списку заявок</string>
          </property>
         </widget>
        </item>

@@ -41,7 +41,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEditPasswd"/>
+       <widget class="QLineEdit" name="lineEditPasswd">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">

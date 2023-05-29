@@ -15,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Вход в систему");
     db = new DB_facade();
+
 }
 
 MainWindow::~MainWindow()
@@ -77,7 +79,7 @@ void MainWindow::openUserWindow(User user){
         dw = new DirectorWindow;
         dw->setUser(user);
         dw->setDB(db);
-        dw->setWindowTitle(QString("%1 %2 | %3  | Директор | Абсолютная власть").arg(user.name, user.surname, user.login));
+        dw->setWindowTitle(QString("%1 %2 | %3  | Директор").arg(user.name, user.surname, user.login));
         dw->updateListOfEmployee();
         dw->show();
         this->close();
