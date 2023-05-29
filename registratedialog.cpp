@@ -3,12 +3,18 @@
 #include "Classes/user.h"
 #include "Classes/db_facade.h"
 #include "QMessageBox"
-
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 RegistrateDialog::RegistrateDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RegistrateDialog)
 {
     ui->setupUi(this);
+    QRegularExpression regExp("^(\\+7)(\\d{10})");
+    QValidator *val = new QRegularExpressionValidator(regExp,this);
+    ui->PhoneNumLineEdit->setValidator(val);
+    ui->PhoneNumLineEdit->setText("+7");
+    //ui->PhoneNumLineEdit->toolTipDuration();
 }
 
 RegistrateDialog::~RegistrateDialog()
@@ -31,7 +37,7 @@ void RegistrateDialog::okButtonClicked(){
     QString phonenum=ui->PhoneNumLineEdit->text();
 
     if( login.isEmpty() || pass.isEmpty() || name.isEmpty() || surname.isEmpty()
-        || phonenum.isEmpty()  ){
+        || (phonenum.length()<12)  ){
         QMessageBox warn(this);
         warn.setText(tr("Не все поля заполнены!"));
         warn.exec();
