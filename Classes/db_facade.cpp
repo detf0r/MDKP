@@ -11,12 +11,89 @@ DB_facade::DB_facade()
 {
     QString computerName = QSysInfo::machineHostName(); //DESKTOP-I5171F1
     qDebug() << computerName;
-    db.setDatabaseName(QString("Driver={ODBC Driver 11 for SQL Server};SERVER=%1\\SQLEXPRESS;DATABASE=MDKP;Trusted_Connection=Yes;").arg(computerName));
+    db.setDatabaseName(QString("Driver={SQL Server};SERVER=%1\\SQLEXPRESS;DATABASE=master;Trusted_Connection=Yes;").arg(computerName));
+
     isOpen = db.open();
+
+    QSqlQuery checkDatabaseQuery(db);
+    checkDatabaseQuery.exec("SELECT COUNT(*) FROM sys.databases WHERE name = \'MDKP\'");
+    int count;
+    if (checkDatabaseQuery.next()) {
+            count = checkDatabaseQuery.value(0).toInt();
+    }
+
+    qDebug() << db.lastError();
+    if(count == 0){
+        createDB();
+        db.close();
+
+        db.setDatabaseName(QString("Driver={SQL Server};SERVER=%1\\SQLEXPRESS;DATABASE=MDKP;Trusted_Connection=Yes;").arg(computerName));
+        db.open();
+        createTables();
+    } else {
+         db.setDatabaseName(QString("Driver={SQL Server};SERVER=%1\\SQLEXPRESS;DATABASE=MDKP;Trusted_Connection=Yes;").arg(computerName));
+         db.open();
+    }
+
     error = db.lastError().text();
     qDebug() << db.lastError();
     qDebug() << QSqlDatabase::drivers();
+    qDebug()<<db.databaseName();
     qDebug() << "DB inicialize";
+}
+bool DB_facade::createTables(){
+    QSqlQuery query;
+    query.exec(QString(                       " create table Users( "
+                                               "ID int identity(1,1) primary key not null, "
+                                               "[Login] nvarchar(30) not null, "
+                                               "Passwd nvarchar(30) not null, "
+                                               "Name nvarchar(40) not null, "
+                                               "Surname nvarchar(50) not null, "
+                                              " Phone nvarchar(12) not null, "
+                                              " [Role] int not null "
+                                           ") "));
+    query.exec(QString(                      " create table [Status]( "
+                                              "ID int identity(1,1) primary key not null, "
+                                              "[Name] nvarchar(30) not null, "
+                                          ") "));
+    query.exec(QString(                       "insert into status values "
+                                              "('В обработке'), "
+                                              "('Принят'), "
+                                              "('Отклонен'), "
+                                              "('В процессе'), "
+                                              "('Завершен') "
+                                          "go " ));
+    query.exec(QString(                       "create table Orders( "
+                                              "ID int identity(1,1) primary key not null, "
+                                              "Addres nvarchar(100) not null, "
+                                              "[Description] nvarchar(200) not null, "
+                                              "TimeDate datetime not null, "
+                                              "[ID_Status] int not null foreign key references [Status](ID), "
+                                              "ID_user int not null foreign key references users(ID), "
+                                              "ID_master int foreign key references users(ID), "
+                                              "ID_manager int foreign key references users(ID) "
+                                          ") "));
+    query.exec(QString(                       "create trigger loginIndentity on Users "
+                                              "instead of insert as "
+                                                  "if((select inserted.[Login] from inserted) in (select Login from Users)) "
+                                                  "begin "
+                                                      "rollback tran "
+                                                  "end "
+                                                  "else "
+                                                     " begin "
+                                                          "insert into Users select Login,Passwd,Name,Surname,Phone,Role from inserted "
+                                                      "end"));
+    return true;
+}
+bool DB_facade::createDB(){
+    QSqlQuery query;
+    query.exec(QString("create database MDKP "));
+
+    qDebug()<< query.lastError().text();
+    error += "\n"+db.lastError().text();
+
+
+    return true;
 }
 User DB_facade::getUser(QString login,QString passwd){
     User user;

@@ -26,6 +26,8 @@ public:
     void setManagerForOrder(int ID_manager,int ID_order);
     bool isOpen;
     QString error;
+    bool createDB();
+    bool createTables();
 };
 
 #endif // DB_FACADE_H
