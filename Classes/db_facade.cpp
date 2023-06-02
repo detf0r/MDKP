@@ -6,9 +6,12 @@
 #include <QtSql/QSqlError>
 #include "QMessageBox"
 #include <QApplication>
+#include <QSysInfo>
 DB_facade::DB_facade()
 {
-    db.setDatabaseName("Driver={ODBC Driver 11 for SQL Server};SERVER=DESKTOP-I5171F1\\SQLEXPRESS;DATABASE=MDKP;Trusted_Connection=Yes;");
+    QString computerName = QSysInfo::machineHostName(); //DESKTOP-I5171F1
+    qDebug() << computerName;
+    db.setDatabaseName(QString("Driver={ODBC Driver 11 for SQL Server};SERVER=%1\\SQLEXPRESS;DATABASE=MDKP;Trusted_Connection=Yes;").arg(computerName));
     isOpen = db.open();
     error = db.lastError().text();
     qDebug() << db.lastError();
