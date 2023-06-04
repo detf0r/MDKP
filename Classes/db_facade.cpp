@@ -43,46 +43,46 @@ DB_facade::DB_facade()
 }
 bool DB_facade::createTables(){
     QSqlQuery query;
-    query.exec(QString(                       " create table Users( "
-                                               "ID int identity(1,1) primary key not null, "
-                                               "[Login] nvarchar(30) not null, "
-                                               "Passwd nvarchar(30) not null, "
-                                               "Name nvarchar(40) not null, "
-                                               "Surname nvarchar(50) not null, "
-                                              " Phone nvarchar(12) not null, "
-                                              " [Role] int not null "
-                                           ") "));
-    query.exec(QString(                      " create table [Status]( "
-                                              "ID int identity(1,1) primary key not null, "
-                                              "[Name] nvarchar(30) not null, "
-                                          ") "));
-    query.exec(QString(                       "insert into status values "
-                                              "('В обработке'), "
-                                              "('Принят'), "
-                                              "('Отклонен'), "
-                                              "('В процессе'), "
-                                              "('Завершен') "
-                                          "go " ));
-    query.exec(QString(                       "create table Orders( "
-                                              "ID int identity(1,1) primary key not null, "
-                                              "Addres nvarchar(100) not null, "
-                                              "[Description] nvarchar(200) not null, "
-                                              "TimeDate datetime not null, "
-                                              "[ID_Status] int not null foreign key references [Status](ID), "
-                                              "ID_user int not null foreign key references users(ID), "
-                                              "ID_master int foreign key references users(ID), "
-                                              "ID_manager int foreign key references users(ID) "
-                                          ") "));
-    query.exec(QString(                       "create trigger loginIndentity on Users "
-                                              "instead of insert as "
-                                                  "if((select inserted.[Login] from inserted) in (select Login from Users)) "
-                                                  "begin "
-                                                      "rollback tran "
-                                                  "end "
-                                                  "else "
-                                                     " begin "
-                                                          "insert into Users select Login,Passwd,Name,Surname,Phone,Role from inserted "
-                                                      "end"));
+    query.exec(QString( " create table Users( "
+                        "ID int identity(1,1) primary key not null, "
+                        "[Login] nvarchar(30) not null, "
+                        "Passwd nvarchar(30) not null, "
+                        "Name nvarchar(40) not null, "
+                        "Surname nvarchar(50) not null, "
+                       " Phone nvarchar(12) not null, "
+                       " [Role] int not null "
+                    ") "));
+    query.exec(QString( " create table [Status]( "
+                        "ID int identity(1,1) primary key not null, "
+                        "[Name] nvarchar(30) not null, "
+                    ") "));
+    query.exec(QString( "insert into status values "
+                        "('В обработке'), "
+                        "('Принят'), "
+                        "('Отклонен'), "
+                        "('В процессе'), "
+                        "('Завершен') "
+                    "go " ));
+    query.exec(QString( "create table Orders( "
+                        "ID int identity(1,1) primary key not null, "
+                        "Addres nvarchar(100) not null, "
+                        "[Description] nvarchar(200) not null, "
+                        "TimeDate datetime not null, "
+                        "[ID_Status] int not null foreign key references [Status](ID), "
+                        "ID_user int not null foreign key references users(ID), "
+                        "ID_master int foreign key references users(ID), "
+                        "ID_manager int foreign key references users(ID) "
+                    ") "));
+    query.exec(QString( "create trigger loginIndentity on Users "
+                        "instead of insert as "
+                            "if((select inserted.[Login] from inserted) in (select Login from Users)) "
+                            "begin "
+                                "rollback tran "
+                            "end "
+                            "else "
+                               " begin "
+                                    "insert into Users select Login,Passwd,Name,Surname,Phone,Role from inserted "
+                                "end"));
     return true;
 }
 bool DB_facade::createDB(){
